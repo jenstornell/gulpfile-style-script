@@ -1,18 +1,19 @@
-var gulp = require("gulp"),
-    sass = require("gulp-sass"),
-    autoprefixer = require("gulp-autoprefixer"),
-    concat = require("gulp-concat");
-
+let gulp = require("gulp");
+let sass = require("gulp-sass");
+let autoprefixer = require("gulp-autoprefixer");
+let concat = require("gulp-concat");
 let uglify = require('gulp-uglify-es').default;
+let csso = require('gulp-csso');
+let rename = require('gulp-rename');
 
 var paths = {
     styles: {
         src: "assets/css/src/**/*.scss",
-        dest: "assets/css/dest"
+        dest: "assets/css/dist"
     },
     scripts: {
         src: "assets/js/src/**/*.js",
-        dest: "assets/js/dest"
+        dest: "assets/js/dist"
     }
 };
 
@@ -20,10 +21,13 @@ function style() {
     return (
         gulp
             .src(paths.styles.src)
-            .pipe(concat('style.min.scss'))
+            .pipe(concat('style.scss'))
             .pipe(sass())
             .on("error", sass.logError)
             .pipe(autoprefixer())
+            .pipe(gulp.dest(paths.styles.dest))
+            .pipe(csso())
+            .pipe(rename({extname: '.min.css'}))
             .pipe(gulp.dest(paths.styles.dest))
     );
 }
@@ -33,7 +37,9 @@ function script() {
         gulp
             .src(paths.scripts.src)
             .pipe(concat('script.min.js'))
+            .pipe(gulp.dest(paths.scripts.dest))
             .pipe(uglify())
+            .pipe(rename({extname: '.min.js'}))
             .pipe(gulp.dest(paths.scripts.dest))
     );
 }
