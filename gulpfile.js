@@ -20,7 +20,7 @@ function style() {
     return (
         gulp
             .src(paths.styles.src)
-            .pipe(concat('test.scss'))
+            .pipe(concat('style.min.scss'))
             .pipe(sass())
             .on("error", sass.logError)
             .pipe(autoprefixer())
