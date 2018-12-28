@@ -11,5 +11,5 @@ Javascript-files saved in `assets/js/src` will be merged and minified and put in
 ## Install
 
 1. Install Node
-1. Install Gulp
+1. Install Gulp by writing this in the terminal: `npm install --save-dev gulp gulp-sass gulp-autoprefixer gulp-concat gulp-uglify-es gulp-csso gulp-rename`.
 1. Run `gulp watch` to watch for file changes.
