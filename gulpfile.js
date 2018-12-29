@@ -6,49 +6,50 @@ let uglify = require('gulp-uglify-es').default;
 let csso = require('gulp-csso');
 let rename = require('gulp-rename');
 
-var paths = {
-    styles: {
-        src: "assets/css/src/**/*.scss",
-        dest: "assets/css/dist"
-    },
-    scripts: {
-        src: "assets/js/src/**/*.js",
-        dest: "assets/js/dist"
-    }
+var css = {
+  src: 'assets/css/src/**/*.scss',
+  dest: 'assets/css/dist',
+  filename: 'style.scss'
+};
+
+var js = {
+  src: 'assets/js/src/**/*.js',
+  dest: 'assets/js/dist',
+  filename: 'script.js'
 };
 
 function style() {
-    return (
-        gulp
-            .src(paths.styles.src)
-            .pipe(concat('style.scss'))
-            .pipe(sass())
-            .on("error", sass.logError)
-            .pipe(autoprefixer())
-            .pipe(gulp.dest(paths.styles.dest))
-            .pipe(csso())
-            .pipe(rename({extname: '.min.css'}))
-            .pipe(gulp.dest(paths.styles.dest))
-    );
+  return (
+    gulp
+      .src(css.src)
+      .pipe(concat(css.filename))
+      .pipe(sass())
+      .on("error", sass.logError)
+      .pipe(autoprefixer())
+      .pipe(gulp.dest(css.dest))
+      .pipe(csso())
+      .pipe(rename({extname: '.min.css'}))
+      .pipe(gulp.dest(css.dest))
+  );
 }
 
 function script() {
-    return (
-        gulp
-            .src(paths.scripts.src)
-            .pipe(concat('script.min.js'))
-            .pipe(gulp.dest(paths.scripts.dest))
-            .pipe(uglify())
-            .pipe(rename({extname: '.min.js'}))
-            .pipe(gulp.dest(paths.scripts.dest))
-    );
+  return (
+    gulp
+      .src(js.src)
+      .pipe(concat(js.filename))
+      .pipe(gulp.dest(js.dest))
+      .pipe(uglify())
+      .pipe(rename({extname: '.min.js'}))
+      .pipe(gulp.dest(js.dest))
+  );
 }
 
 function watch(){
-    gulp.watch(paths.styles.src, style);
-    gulp.watch(paths.scripts.src, script);
+  gulp.watch(css.src, style);
+  gulp.watch(js.src, script);
 }
 
-exports.style = style;
-exports.script = script;
-exports.watch = watch;
+exports.css = style;
+exports.js = script;
+exports.default = watch;
